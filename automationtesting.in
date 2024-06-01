@@ -1,0 +1,46 @@
+# Откройте страницу http://demo.automationtesting.in/Register.html
+import time
+from selenium import webdriver
+from selenium.webdriver.support.select import Select
+driver = webdriver.Chrome(executable_path='C:/chromedriver-win64/chromedriver-win64/chromedriver.exe')
+driver.maximize_window()
+driver.get("http://demo.automationtesting.in/Register.html")
+time.sleep(3)
+# Заполните произвольными данными только обязательные поля(*) в регистрации(а так же поля: Date of Birth, Password, Confirm Password)
+# • Поле телефон должно содержать: 10 цифр, без +, например: 1234567890 ; если номер уже существует в системе – появится ошибка
+# • Значение в селекторе country, date of birth выбирайте с помощью класса Select из библиотеки WebDriver
+# • Если будет отображаться селектор "country", состоящий из 1-го варианта, тогда его можно не заполнять, и также можно пропустить 7-й пункт этого задания
+# • Поля password, confirm password должны содержать: не менее 6 символов, маленькую букву, большую букву, цифру
+first_name = driver.find_element_by_css_selector('[placeholder="First Name"]')
+first_name.send_keys("sdfg")
+last_name = driver.find_element_by_css_selector('[ng-model="LastName"]')
+last_name.send_keys("fghnvn")
+email_address = driver.find_element_by_css_selector('[type="email"]')
+email_address.send_keys('lolkek@mail.ru')
+phone = driver.find_element_by_css_selector('[type="tel"]')
+phone.send_keys('0123456789')
+gender = driver.find_element_by_css_selector('[type="radio"][value="Male"]')
+gender.click()
+password = driver.find_element_by_id('firstpassword')
+password.send_keys('Qwer12')
+confirm_password = driver.find_element_by_id('secondpassword')
+confirm_password.send_keys('Qwer12')
+time.sleep(3)
+# Загрузите любой файл в раздел "Photo" вверху справа 
+file = ('C:/oboi.jpg')
+upload_photo = driver.find_element_by_id('imagesrc')
+upload_photo.send_keys(file)
+# Проскролльте страницу вниз на 300 пикселей
+driver.execute_script('window.scrollBy(0, 300);')
+# Нажмите на кнопку Submit 
+submit = driver.find_element_by_id('submitbtn')
+submit.click()
+time.sleep(3)
+# Добавьте проверку, что произошёл переход на страницу: http://demo.automationtesting.in/WebTable.html
+current_page = driver.current_url
+expected_address = 'http://demo.automationtesting.in/WebTable.html'
+if current_page == expected_address:
+    print('адрес страницы совпадает')
+else:
+    print('адрес не совпадает, фактический:', current_page)
+    print('ожидаемый:', expected_address)
