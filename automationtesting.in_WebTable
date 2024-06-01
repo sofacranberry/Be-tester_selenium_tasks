@@ -1,0 +1,61 @@
+# Откройте страницу: http://demo.automationtesting.in/WebTable.html
+import time
+from selenium import webdriver
+from selenium.webdriver.support.select import Select
+driver = webdriver.Chrome(executable_path='C:/chromedriver-win64/chromedriver-win64/chromedriver.exe')
+driver.maximize_window()
+driver.get("http://demo.automationtesting.in/WebTable.html")
+time.sleep(3)
+# Перейдите на вкладку "SwitchTo" - > "Alerts"
+switch_to = driver.find_element_by_class_name('dropdown-toggle')
+switch_to.click()
+alerts = driver.find_element_by_link_text('Alerts')
+alerts.click()
+time.sleep(3)
+# Нажмите на кнопку "click the button to display an alert box:" 
+button = driver.find_element_by_class_name('btn.btn-danger')
+button.click()
+time.sleep(3)
+# Выведите в консоль содержимое окна alert и нажмите "OK"
+alert = driver.switch_to.alert
+alert_text = alert.text
+print(alert_text)
+alert.accept()
+if alert_text == 'I am an alert box!':
+    print('ok')
+else:
+    print('ошибка')
+# Получите адрес текущей ссылки
+current_page = driver.current_url
+print(current_page)
+time.sleep(3)
+# Откройте новую вкладку в браузере, введите ссылку из предыдущего шага и перейдите по ней 
+driver.execute_script("window.open();")
+window_after = driver.window_handles[1]
+driver.switch_to.window(window_after)
+driver.get("https://demo.automationtesting.in/Alerts.html")
+# Нажмите на "Alert with OK & Cancel" -> "click the button to display a confirm box" 
+alter_ok_cancel = driver.find_element_by_css_selector('[href="#CancelTab"]')
+alter_ok_cancel.click()
+button = driver.find_element_by_class_name('btn.btn-primary')
+button.click()
+time.sleep(3)
+# В модальном окне нажмите "Отмена"
+cancel = driver.switch_to.alert
+cancel.dismiss()
+# Откройте новую вкладку в браузере и перейдите по ней 
+driver.execute_script("window.open();")
+window_after = driver.window_handles[2]
+driver.switch_to.window(window_after)
+driver.get("https://demo.automationtesting.in/Alerts.html")
+time.sleep(3)
+# Нажмите на "Alert with Textbox"-> "click the button to demonstrate the prompt box"
+alert_with_textbox = driver.find_element_by_css_selector('[href="#Textbox"]')
+alert_with_textbox.click()
+button = driver.find_element_by_class_name('btn.btn-info')
+button.click()
+time.sleep(3)
+# В модальном окне, введите текст: "Ура! Задание выполнено!" и нажмите "OK"
+window = driver.switch_to.alert
+window.send_keys("Ура! Задание выполнено!")
+window.accept()
